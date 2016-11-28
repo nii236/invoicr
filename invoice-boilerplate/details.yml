@@ -1,0 +1,45 @@
+---
+invoice-nr: "0002"
+author: John Nguyen
+city: Perth
+from:
+- "ABN: 91 632 302 812"
+to:
+- Stocks in Play
+- Suite 2, Level 45
+- 180 St Georges Terrace
+- Perth WA 6000
+
+GST: 0
+service:
+- description: Professional Services, 4.5 hours
+  details:
+  - Ticker data microservice (Go)
+  price: 450
+
+closingnote: |
+  Please transfer the due amount to the following bank account within the next 14 days:
+
+  John Nguyen
+
+  BSB: 923-100
+
+  Account: 33508867
+
+
+  Your business is greatly appreciated.
+
+  Best regards,
+
+# Invoice settings
+currency: AUD
+# commasep: true
+lang: english
+
+# Typography and layout
+seriffont: Hoefler Text
+sansfont: Raleway
+fontsize: 10pt
+geometry: a4paper, left=43mm, right=43mm, top=51mm, bottom=17mm
+# letterhead: true # To include personalized letterheads
+---

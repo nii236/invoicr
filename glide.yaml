@@ -1,0 +1,4 @@
+package: github.com/nii236/invoicr
+import:
+- package: github.com/go-yaml/yaml
+- package: github.com/nii236/adjectiveadjectiveanimal

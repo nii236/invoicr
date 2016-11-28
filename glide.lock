@@ -1,0 +1,8 @@
+hash: 5ec7b28fc6e72b8234e3c44f934370090906014a62a814109eff3b45e7564a74
+updated: 2016-11-22T10:29:50.420319091+08:00
+imports:
+- name: github.com/go-yaml/yaml
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
+- name: github.com/nii236/adjectiveadjectiveanimal
+  version: 738014549003e45b59f2b0c793a60ef9ff9ebd9c
+testImports: []
