@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
-	"path"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/nii236/gopher-resume/aaa"
 )
@@ -40,47 +39,28 @@ type TempJSON struct {
 func main() {
 	fmt.Println("Starting invoicr...")
 	r := mux.NewRouter()
-	r.HandleFunc("/", index).Methods("GET")
-	r.HandleFunc("/invoice", generateInvoice).Methods("POST")
-	http.ListenAndServe(":8080", r)
+	r.PathPrefix("/app/").Handler(http.StripPrefix("/app/", http.FileServer(http.Dir("./web/build/"))))
+	r.Handle("/invoice/", corsHandler(generateInvoice)) //.Methods("POST")
+	http.ListenAndServe(":8080", handlers.CORS()(r))
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
-	fp := path.Join("templates", "index.html")
-	tmpl, err := template.ParseFiles(fp)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	if err := tmpl.Execute(w, nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func corsHandler(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "OPTIONS" {
+			// Handle preflight
+		} else {
+			h.ServeHTTP(w, r)
+		}
 	}
 }
 
 func generateInvoice(w http.ResponseWriter, r *http.Request) {
-	invoiceDate := time.Now().Format("2006-01-02")
+	log.Println("Request received")
 	uuid := aaa.Generate(2, "-")
-	log.Println(fmt.Sprintf("invoice number: %s-%s", invoiceDate, uuid))
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		w.Write([]byte("Method not allowed"))
 		return
 	}
-	//
-	// req, err := ioutil.ReadAll(r.Body)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// defer r.Body.Close()
-	// var tempJSON JSONRequest
-	// err = json.Unmarshal(req, &tempJSON)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// yml, err := yaml.Marshal(tempJSON)
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// log.Println(string(yml))
-	// w.Write(yml)
+	w.Write([]byte(uuid))
 }
